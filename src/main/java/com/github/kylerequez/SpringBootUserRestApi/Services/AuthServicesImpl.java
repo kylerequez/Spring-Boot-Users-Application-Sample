@@ -79,14 +79,15 @@ public class AuthServicesImpl implements AuthServices {
     }
 
     public ResponseEntity<RegistrationResponse> registrationRequest(RegistrationRequest request) {
-        if(!request.getPassword().equals(request.getConfirmPassword())) return ResponseEntity.status(HttpStatus.CONFLICT).body(
+        if(!request.getPassword().equals(request.getConfirmPassword()))
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(
                 RegistrationResponse.builder()
                         .status(HttpStatus.CONFLICT)
                         .message("Passwords must match! Please try again.")
                         .build()
-        );
+            );
 
-        if(this.usersRepository.findUserByContactNumberOrPassword(request.getContactNumber(), request.getPassword()).isPresent())
+        if(this.usersRepository.findUserByContactNumberOrEmail(request.getContactNumber(), request.getPassword()).isPresent())
             return ResponseEntity.status(HttpStatus.CONFLICT).body(
                     RegistrationResponse.builder()
                             .status(HttpStatus.CONFLICT)
@@ -106,7 +107,7 @@ public class AuthServicesImpl implements AuthServices {
                 .createdAt(new Date())
                 .build();
 
-        String link = null;
+        String link;
         try {
             this.usersRepository.save(user);
 

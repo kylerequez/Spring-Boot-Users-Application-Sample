@@ -14,7 +14,7 @@ public interface UsersRepository extends JpaRepository<User, String> {
             "where " +
             "   u.contactNumber = :contactNumber " +
             "   or u.email = :email")
-    Optional<User> findUserByContactNumberOrPassword(
+    Optional<User> findUserByContactNumberOrEmail(
             @Param(value = "contactNumber") String contactNumber,
             @Param(value = "email") String email
     );
@@ -26,6 +26,7 @@ public interface UsersRepository extends JpaRepository<User, String> {
 
     @Query("select u from User u " +
             "where " +
-            "   u.email = :email")
+            "   u.email = :email" +
+            "   and u.status = 'REGISTERED'")
     Optional<User> findUserByEmail(@Param(value = "email") String email);
 }

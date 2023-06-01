@@ -60,7 +60,7 @@ public class UserServicesImpl implements UserServices{
     @Override
     @Transactional
     public ResponseEntity<String> insertUser(User user) {
-        var existingUser = this.usersRepository.findUserByContactNumberOrPassword(
+        var existingUser = this.usersRepository.findUserByContactNumberOrEmail(
                 user.getContactNumber(),
                 user.getEmail()
         );
